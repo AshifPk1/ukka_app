@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_whatsapp_default_form" model="ir.ui.view">
+            <field name="name">whatsapp.default.form</field>
+            <field name="model">whatsapp.default</field>
+            <field name="arch" type="xml">
+                <form string="Whatsapp message default ">
+                    <sheet string="Invoice">
+                         <separator string="Whatsapp message template" class="oe_text_center"
+                                           style="background-color: #eee; padding: 5px;"/>
+                        <group>
+                            <group>
+                                <field name="name"  string="Title Template" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="category" widget="selection" string="Category" class="oe_inline" />
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        <hr/>
+
+                        <label for="default_messege" string="Message Default"/>
+                        <field name="default_messege" />
+                        <hr/>
+                        <p>*Remember, you can place the bellow shortcode  to get the respective values automatically in your template message.</p>
+                        <ul>
+                            <li>Name : {{name}}</li>
+                            <li>Product List : {{product_details}}</li>
+                            <li>Sale Order Number : {{number}}</li>
+                        </ul>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_whatsapp_default_tree" model="ir.ui.view">
+            <field name="name">whatsapp.default.tree</field>
+            <field name="model">whatsapp.default</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Title"/>
+                    <field name="default_messege" string="Message template"/>
+                    <field name="category" string="Category"/>
+                </tree>
+            </field>
+        </record>
+
+   <record id="action_whatsapp_templete" model="ir.actions.act_window">
+        <field name="name">Whatsapp Templates</field>
+        <field name="res_model">whatsapp.default</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="whatsapp_templete_menu"
+              name="Whatsapp Template"
+              parent="odoo_whatsapp_connector.menu_whatsapp_parent"
+              action="action_whatsapp_templete"
+              sequence="3"/>
+    </data>
+
+</odoo>

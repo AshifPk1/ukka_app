@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit partner Form View to Modify it -->
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+<!--                <xpath expr="//field[@name='name']" position="after">-->
+<!--                    <field name="is_delivery" invisible="1"></field>-->
+
+<!--                    <field name="is_off_duty" invisible="1"></field>-->
+<!--                </xpath>-->
+                 <xpath expr="//div[hasclass('oe_title')]" position="after">
+                     <div>
+                          <field name="is_delivery" nolabel="1"/>
+                     <label for="is_delivery" string="Is Delivery Boy"/>
+                     </div>
+                     <div>
+                          <field name="is_off_duty" nolabel="1"/>
+                     <label for="is_off_duty" string="Is Off Duty"/>
+                     </div>
+                     <div>
+                          <field name="outside_purchase" nolabel="1"/>
+                     <label for="outside_purchase"/>
+                     </div>
+                      <div>
+                          <field name="selected_address" readonly="1" nolabel="1"/>
+                     <label for="selected_address"/>
+                     </div>
+
+
+                </xpath>
+                <xpath expr="//div[hasclass('o_address_format')]/field[@name='country_id']" position="after">
+                       <field name="location_link" widget="url" placeholder="Location"/>
+                </xpath>
+
+                <xpath expr="//field[@name='vat']" position="after">
+
+                   <field name="charge_per_km"/>
+                    <field name="fixed_amount"/>
+
+
+                </xpath>
+
+<!--                <xpath expr="//field[@name='child_ids']/kanban/field[@name='lang']" position="after">-->
+<!--                    <field name="selected_address"/>-->
+<!--                </xpath>-->
+
+<!--                <xpath expr="//field[@name='child_ids']/kanban/templates//div[@class='oe_kanban_details']/field[@name='name']" position="after">-->
+<!--                <li>Selected Address: <field name="selected_address" /></li>-->
+<!--                </xpath>-->
+
+
+
+            </field>
+        </record>
+    </data>
+</odoo>

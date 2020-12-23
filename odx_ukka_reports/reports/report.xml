@@ -1,0 +1,47 @@
+<odoo>
+    <report
+            id="deliver_boy_branch_xlsx_report"
+            model="delivery.boy.report.xlsx.wiz"
+            string="Deliver Boy Report"
+            report_type="xlsx"
+            name="delivery_boy_xlsx_report.report_xlsx"
+            file="Delivery Boy Report"
+            attachment_use="False"
+            menu="False"
+        />
+<report
+            id="vendor_report"
+            model="vendor.report.wiz"
+            string="Vendor Report"
+            report_type="xlsx"
+            name="vendor_report.report.report.xlsx"
+            file="Vendor Report"
+            attachment_use="False"
+            menu="True"
+        />
+    <report
+            id="delivery_report"
+            model="delivery.report.wiz"
+            string="Delivery Report"
+            report_type="xlsx"
+            name="delivery_time.report.report.xlsx"
+            file="Delivery Time Report"
+            attachment_use="False"
+            menu="True"
+        />
+    <report
+            id="periodical_report_all_branch_xlsx_report"
+            model="periodical.report.xlsx.wiz"
+            string="Periodical Report"
+            report_type="xlsx"
+            name="periodical_all_branch_xlsx_report.report_xlsx"
+            file="Periodical Report"
+            attachment_use="False"
+            menu="False"
+        />
+    <menuitem id="sale.menu_sale_report"
+            name="Reporting"
+            parent="sale.sale_menu_root"
+            sequence="5"
+            groups="base.group_system"/>
+</odoo>

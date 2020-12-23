@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record id="time_slot_details_view_tree" model="ir.ui.view">
+            <field name="name">time_slot_details.view.tree</field>
+            <field name="model">delivery.time.slot</field>
+            <field name="arch" type="xml">
+                <tree string="Time Slots">
+                    <field name="name"/>
+                    <field name="from_time"/>
+                    <field name="to_time"/>
+                    <field name="timing"/>
+
+
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="time_slot_details_view_form">
+            <field name="name">time_slot_details.view.form</field>
+            <field name="model">delivery.time.slot</field>
+            <field name="arch" type="xml">
+                <form>
+
+                    <sheet>
+
+
+
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="timing"/>
+
+                            </group>
+                            <group>
+                                <field name="from_time"/>
+                                <field name="to_time"/>
+                            </group>
+                        </group>
+
+
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_time_slot_details" model="ir.actions.act_window">
+            <field name="name">Delivery Time Slots</field>
+            <field name="res_model">delivery.time.slot</field>
+            <field name="view_mode">tree,form</field>
+
+
+        </record>
+
+        <menuitem name="Delivery Time Slots" id="menu_time_slot_details" action="action_time_slot_details"
+                  parent="delivery_order_menu" sequence="6" groups="odx_delivery_customization.ukka_group_manager"/>
+    </data>
+</odoo>

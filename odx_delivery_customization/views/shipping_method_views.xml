@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_delivery_carrier_form_inherited" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.inherited</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='integration_level']" position='after'>
+
+                <label for="urgent_delivery"/>
+                <div>
+
+                    <field name="urgent_delivery" nolabel="1"/>
+
+                </div>
+                <label for="scheduled_delivery"/>
+                <div>
+
+                    <field name="scheduled_delivery" nolabel="1"/>
+
+                </div>
+                <label for="delivery_time" attrs="{'invisible': [('scheduled_delivery', '=', True)]}"/>
+                <div>
+                    <field name="delivery_time" nolabel="1" attrs="{'invisible': [('scheduled_delivery', '=', True)]}"/>
+                </div>
+
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Sale Order Form View to Modify it -->
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[11]" position="before">
+                    <button name="check_loyalty_program" string="Set Points"
+                            type="object" class="oe_highlight" invisible="1"
+                            />
+                    <button name="redeem_loyalty_points" string="Redeem Points"
+                            type="object" class="oe_highlight" invisible="1"
+                            />
+
+
+                </xpath>
+                 <xpath expr="//page[@name='other_information']" position="inside">
+                     <field name="earned_points" invisible="1"/>
+                     <field name="earned_coin_value" invisible="1"/>
+                     <field name="redeemed_coins" invisible="1"/>
+                     <field name="redeemed_value" invisible="1"/>
+
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+        <record id="action_return_orders" model="ir.actions.act_window">
+            <field name="name">Return Orders</field>
+            <field name="res_model">delivery.picking.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('returned_qty', '>', 0)]</field>
+        </record>
+<!--        Tree view for Return orders-->
+        <record id="delivery_picking_line_tree" model="ir.ui.view">
+        <field name="name">delivery.picking.line.tree</field>
+        <field name="model">delivery.picking.line</field>
+        <field name="arch" type="xml">
+            <tree  string="Return Orders" create="0" default_order="create_date">
+
+                <field name="sale_order_id"/>
+                <field name="picking_line_id"/>
+                 <field name="product_id"/>
+                <field name="returned_qty"/>
+                <field name="create_time"/>
+
+
+            </tree>
+        </field>
+    </record>
+<!--        Form View for Return Orders-->
+        <record id="delivery_picking_line_form" model="ir.ui.view">
+        <field name="name">delivery.picking.line.form</field>
+        <field name="model">delivery.picking.line</field>
+        <field name="arch" type="xml">
+            <form string="Return Orders" create="0" edit="0">
+
+                <sheet>
+                     <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                       </div>
+                 <group>
+                         <group>
+
+                            <field name="sale_order_id"/>
+                            <field name="picking_line_id" />
+                             <field name="product_id"/>
+                    </group>
+                    <group>
+
+
+
+                            <field name="product_qty"/>
+                            <field name="returned_qty"/>
+                            <field name="create_time"/>
+
+                        </group>
+                 </group>
+
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+        <menuitem name="Return Orders" id="menu_returned_orders" action="action_return_orders"
+                  parent="sale.sale_order_menu" sequence="4"/>
+
+    </data>
+</odoo>

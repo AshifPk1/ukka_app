@@ -1,0 +1,72 @@
+<odoo>
+    <data>
+        <record id="action_quotations_in_app" model="ir.actions.act_window">
+            <field name="name">Customer Quotations</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="domain">[('state','=','draft'),('order_method','=','app'),('cancelled_order','=',False)]
+            </field>
+            <field name="context">{'search_default_order_placed': 1}</field>
+        </record>
+        <record id="action_cancelled_orders_in_app" model="ir.actions.act_window">
+            <field name="name">Cancelled Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('order_placed',
+                '=',True),('state','=','draft'),('order_method','=','app'),('cancelled_order','=',True)]
+            </field>
+
+        </record>
+        <record id="action_orders_in_app" model="ir.actions.act_window">
+            <field name="name">Customer Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="domain">[('order_placed',
+                '=',True),('state','=','sale'),('order_method','=','app'),('cancelled_order','=',False)]
+            </field>
+            <field name="context">{'search_default_order_placed': 1}</field>
+        </record>
+<!--        <record id="action_cart_orders_in_app" model="ir.actions.act_window">-->
+<!--            <field name="name">Cart Orders</field>-->
+<!--            <field name="res_model">sale.order</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="domain">[('order_placed', '=',False),('order_method','=','app'),('state','=','draft')]</field>-->
+
+<!--        </record>-->
+<!--        <record id="action_delivery_wrk_view" model="ir.actions.act_window">-->
+<!--            <field name="name">Work Details</field>-->
+<!--            <field name="res_model">work.details</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="domain">[('picking_boy_id','=', user_id.partner_id)]</field>-->
+<!--            <field name="context">{'search_default_filter_on_duty': 1}</field>-->
+
+<!--        </record>-->
+<!--         <record id="action_delivery_ord_view" model="ir.actions.act_window">-->
+<!--            <field name="name">My Orders</field>-->
+<!--            <field name="res_model">delivery.picking</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--&lt;!&ndash;            <field name="domain">['|',('pick_up_boy_id.picking_boy_id.user_id','=',uid),('delivery_boys_id.picking_boy_id.user_id','=',uid)]</field>&ndash;&gt;-->
+<!--            <field name="context">{'search_default_state': 1}</field>-->
+<!--        </record>-->
+
+
+
+<!--        <menuitem name="Cart Orders" id="menu_cart_orders_from_app" action="action_cart_orders_in_app"-->
+<!--                  parent="mobile_app_menu" sequence="4"/>-->
+        <menuitem name="Customer Quotations" id="menu_quotations_from_app" action="action_quotations_in_app"
+                  parent="mobile_app_menu" sequence="4"/>
+        <menuitem name="Customer Orders" id="menu_orders_from_app" action="action_orders_in_app"
+                  parent="mobile_app_menu" sequence="4"/>
+        <menuitem name="Cancelled Orders" id="menu_cancel_orders_from_app" action="action_cancelled_orders_in_app"
+                  parent="mobile_app_menu" sequence="4"/>
+<!--        <menuitem name=" My Work Detail" id="menu_delivery_boys_menus"-->
+<!--                  parent="sale.sale_menu_root" sequence="4"/>-->
+<!--        <menuitem name="Work Details" id="menu_delivery_wrk_menu" action="action_delivery_wrk_view"-->
+<!--                  parent="menu_delivery_boys_menus" sequence="4"/>-->
+<!--        <menuitem name="My Orders" id="menu_delivery_ord_menu" action="action_delivery_ord_view"-->
+<!--                  parent="menu_delivery_boys_menus" sequence="4"/>-->
+
+    </data>
+</odoo>

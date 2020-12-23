@@ -1,0 +1,162 @@
+<odoo>
+    <data>
+        <!--        Create Tree view for settlements model-->
+        <record id="settlement_details_view_tree" model="ir.ui.view">
+            <field name="name">settlement_details.view.tree</field>
+            <field name="model">settlement.details</field>
+            <field name="arch" type="xml">
+                <tree string="Settlement Details">
+                    <field name="name"/>
+                    <field name="work_details_id"/>
+                    <field name="total_charge_to_pay"/>
+                    <field name="state"/>
+
+                </tree>
+            </field>
+        </record>
+        <!--     Create form view for settlements model-->
+        <record model="ir.ui.view" id="settlement_details_form_view">
+            <field name="name">settlement.details.form</field>
+            <field name="model">settlement.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_payment_settlement" string="Make Payment"
+                                attrs="{'invisible':[('state', 'not in', ['settled'])]}"
+                                type="object" class="oe_highlight"/>
+                         <button name="action_confirm_settlement" string="Confirm"
+                                attrs="{'invisible':[('state', 'not in', ['draft'])]}"
+                                type="object" class="oe_highlight"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,settled,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"
+                             >
+<!--                            <button name="view_settlement_invoice" type="object" class="oe_stat_button" icon="fa-edit"-->
+<!--                                    string="Invoice" attrs="{'invisible':[('state', 'not in', ['settled'])]}">-->
+                                <field name="invoice_id" invisible="1"/>
+<!--                            </button>-->
+                            <button name="view_to_pay_journals" type="object" class="oe_stat_button" icon="fa-edit"
+                                    string="Expenses" attrs="{'invisible':[('state', 'not in', ['paid','settled'])]}">
+                                <field name="expense_journal_ids" invisible="1"/>
+                            </button>
+                            <button name="view_paid_journals" type="object" class="oe_stat_button" icon="fa-edit"
+                                    string="Payments" attrs="{'invisible':[('state', 'not in', ['paid'])]}">
+                                <field name="payment_journal_ids" invisible="1"/>
+                            </button>
+                        </div>
+
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="work_details_id" options="{'no_create_edit': True}"
+                                       attrs="{'readonly':[('state', 'in', ['settled','paid'])]}"/>
+                                <field name="company_id" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+<!--                                <field name="upi_payments" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>-->
+<!--                                <field name="cash_payments" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>-->
+
+<!--                                <field name="total_order_value" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>-->
+
+                            </group>
+                            <group>
+<!--                                <field name="fixed_amount" force_save="1" options="{'no_create_edit': False}"-->
+<!--                                       attrs="{'readonly':[('state', 'in', ['settled','paid'])]}"/>-->
+<!--                               -->
+                                <field name="payment_method_id"
+                                       attrs="{'invisible':[('state', 'not in', ['settled','paid'])],'readonly':[('state', 'in', ['paid'])]}" />
+
+                            </group>
+                            <group string="Delivered Collection">
+                                <field name="total_order_value" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+                                <field name="total_credit_amount" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+                                <field name="upi_payments" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+                                <field name="outside_purchase_cost"
+                                       attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+                                <!--                                <field name="fixed_amount" force_save="1" options="{'no_create_edit': False}"-->
+<!--                                       attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>-->
+                                <field name="total_charge_to_pay" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+
+                            </group>
+                              <group string="TA">
+
+                                    <field name="ending_km_in_numbers"
+                                           attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}" force_save="1"/>
+
+
+                                    <field name="starting_km_in_numbers"
+                                           attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}" force_save="1"/>
+
+
+                                <field name="charge_per_km" force_save="1" options="{'no_create_edit': False}"
+                                       attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+                                <field name="total_km" attrs="{'readonly':[('state', 'in', ['draft','settled','paid'])]}"/>
+                            </group>
+
+
+                        </group>
+
+<!--                        <group class="oe_subtotal_footer oe_right" colspan="2" name="delivery_total">-->
+
+
+<!--                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">-->
+<!--                                <label for="total_charge_to_pay"/>-->
+<!--                            </div>-->
+<!--                            <field name="total_charge_to_pay" nolabel="1" class="oe_subtotal_footer_separator"-->
+<!--                                   widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+<!--                        </group>-->
+
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="settlement_details_search" model="ir.ui.view">
+            <field name="name">settlement.details.search</field>
+            <field name="model">settlement.details</field>
+            <field name="arch" type="xml">
+                <search string="Settlement Details">
+
+                    <filter string="Confirmed Payments" name="filter_delivered_orders"
+                            domain="[('state','=','settled')]"/>
+                    <filter string="Settled Payments" name="filter_settled_orders"
+                            domain="[('state','=','paid')]"/>
+                    <filter string="Pending Payments" name="filter_pending_orders" domain="[('state','=','draft')]"/>
+                    <filter string="Create Date" name="filter_create_date" date="create_date"/>
+
+                    <separator/>
+
+                    <field name="name"/>
+
+                    <field name="work_details_id"/>
+
+
+                    <group expand="1" string="Group By">
+
+
+                        <filter string="State" name="state" context="{'group_by':'state'}"/>
+
+
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_settlement_details" model="ir.actions.act_window">
+            <field name="name">Settlement Details</field>
+            <field name="res_model">settlement.details</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_filter_settled_orders': 1}</field>
+
+
+        </record>
+
+        <menuitem name="Settlement Details" id="menu_settlement_details" action="action_settlement_details"
+                  parent="work_details_menu" sequence="6" groups="odx_delivery_customization.ukka_group_manager"/>
+    </data>
+</odoo>

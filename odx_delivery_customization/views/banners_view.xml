@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_banner_images_form" model="ir.ui.view">
+        <field name="name">banner.images.view.form</field>
+        <field name="model">banner.images</field>
+        <field name="arch" type="xml">
+            <form string="Banner Images">
+
+                <div class="row o_website_sale_image_modal">
+                    <div class="col-md-6 col-xl-5">
+                        <label for="name" string="Image Name"/>
+                        <h2><field name="name" placeholder="Image Name"/></h2>
+<!--                         <label for="product_id" string="Product"/>-->
+                           <field name="company_id" invisible="1"/>
+                         <label for="description" string="Description" invisible="1"/>
+                            <field name="description" invisible="1"/>
+                        <label for="category_id" string="Category"/>
+                        <field name="category_id"/>
+                         <label for="is_active" string="Active"/>
+                            <field name="is_active"/>
+                    </div>
+                    <div class="col-md-6 col-xl-7 text-center o_website_sale_image_modal_container">
+                        <div class="row">
+                            <div class="col">
+                                <field name="banner_image" widget="image" style="height: 100px !important; width:150 px !important"/>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="banner_images_view_kanban" model="ir.ui.view">
+        <field name="name">banner.images.view.kanban</field>
+        <field name="model">banner.images</field>
+        <field name="arch" type="xml">
+            <kanban string="Banner Images" >
+                <field name="id"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="banner_image"/>
+                <field name="is_active"/>
+
+                <templates>
+                    <t t-name="kanban-box" >
+                        <div class="card oe_kanban_global_click p-0" style="height:auto !important;width : auto !important">
+                            <div class="o_squared_image"  >
+                                <img class="card-img-top" t-att-src="kanban_image('banner.images', 'banner_image', record.id.value)" t-att-alt="record.name.value" style="height:140px !important;width :160px!important"/>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

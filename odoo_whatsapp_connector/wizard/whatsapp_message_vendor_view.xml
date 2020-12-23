@@ -1,0 +1,26 @@
+<odoo>
+
+    <record id="whatsapp_message_vendor_view" model="ir.ui.view">
+        <field name="name">whatsapp.message.vendor.form</field>
+        <field name="model">whatsapp.message.vendor</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <form string="Whatsapp Message">
+                <group>
+                    <field name="partner_ids" invisible="1"/>
+                    <field name="partner_id" required="1" options="{'no_create': True}"/>
+                </group>
+                <group>
+                    <field name="message"/>
+                    <field name="sale_order_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="send_whatsapp_message" string="Send" icon="fa-paper-plane" type="object" class="oe_highlight"/>
+                    <button name="cancel" string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,2 +1,2 @@
-# ukka_app
-odoo
+# ukkasouq-mobile
+odoo 13

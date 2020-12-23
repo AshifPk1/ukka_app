@@ -1,0 +1,46 @@
+  <data>
+        <!-- Inherit Product category Form View to Modify it -->
+        <record id="view_product_category_form_inherit" model="ir.ui.view">
+            <field name="name">product.category.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group" position="after">
+                    <group>
+                        <label for="image_1920" string="Image"/>
+                        <div>
+                            <field name="image_1920" widget='image'
+                                   style="height:150px;width:150px"/>
+                        </div>
+
+                        <field name="company_id"/>
+                        <field name="image" invisible="1"/>
+                        <field name="image_512" invisible="1"/>
+                        <field name="image_256" invisible="1"/>
+                        <field name="image_128" invisible="1"/>
+                        <field name="is_restuarant_category" groups="base.group_no_one"/>
+                        <field name="is_miscellaneous_category" groups="base.group_no_one"/>
+                        <field name="is_delivery" groups="base.group_no_one"/>
+
+                        <field name="sequence" widget="handle" invisible="1"/>
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+              <record id="view_product_category_tree_inherit" model="ir.ui.view">
+            <field name="name">product.category.tree.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_list_view"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='display_name']" position="before">
+
+
+                           <field name="sequence" widget="handle"/>
+
+
+            </xpath>
+            </field>
+        </record>
+
+  </data>

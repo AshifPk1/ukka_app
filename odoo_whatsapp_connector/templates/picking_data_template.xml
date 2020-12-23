@@ -1,0 +1,67 @@
+<odoo>
+    <template id="picking_data_template">
+        <t t-foreach="docs" t-as="doc">
+            <span>*Customer Details*</span>
+            <br/>
+            <br/>
+            Customer Name:
+            <span t-field="doc.partner_shipping_id.name"/>
+            <br/>
+            Address:
+            <span t-field="doc.partner_shipping_id.street"/>
+            <br/>
+            <br/>
+            Landmark:
+            <span t-field="doc.partner_shipping_id.street2"/>
+            <br/>
+            <br/>
+            Location:
+            <a>
+                <span style="color: #875A7B;" t-field="doc.partner_shipping_id.location_link"></span>
+            </a>
+            <br/>
+            <br/>
+            *Item Details*
+            <br/>
+            <t t-set="total" t-value="0"/>
+            <t t-set="delivery_charge" t-value="0"/>
+
+            <t t-foreach="order_line" t-as="line">
+                <t t-if="line.is_delivery">
+                    Delivery Method:
+                    <span t-field="line.product_id"/>
+                    <br/>
+                    Delivery Charge:
+                    <span t-field="line.price_subtotal"/>
+                    <t t-set="delivery_charge" t-value="delivery_charge+line.price_subtotal"/>
+
+                </t>
+
+                <t t-if="not line.is_delivery">
+                    <span t-field="line.product_id"/>
+                    <span t-field="line.product_id.malayalam_name"/>
+                    <br></br>
+
+                    Ordered Units:<span t-field="line.product_uom_qty"/>&amp;nbsp;
+                    <span t-field="line.product_uom.name"/> &amp;nbsp;&amp;nbsp;
+
+                    <br/>
+                    Total Ordered Qty:<span t-field="line.app_ordered_qty"/>&amp;nbsp;
+                    <br/>
+                    Total Price:
+                    <span t-field="line.price_total"/>
+                    <t t-set="total" t-value="total + line.price_total"/>
+
+                    <br/>
+                    <br/>
+                </t>
+
+            </t>
+            <br/>
+            *Total*:
+            <t t-set="total" t-value="total + delivery_charge"/>
+            <span t-esc="total"/>
+            <br/>
+        </t>
+    </template>
+</odoo>

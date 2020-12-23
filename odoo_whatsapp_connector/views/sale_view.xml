@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Sale Order Form View to Modify it -->
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header" position="inside">
+                    <button name="send_whatsapp_mesage" string="WhatsApp Customer" class="oe_highlight"
+                            type="object"/>
+                    <button name="send_whatsapp_to_vendor" string="WhatsApp Vendor" class="oe_highlight"
+                            type="object"/>
+                    <button name="quick_send_whatsapp_mesage" string="Quick Send To Customer"
+                            type="object"/>
+                    <button name="quick_send_whatsapp_to_vendor" string="Quick Send  To Vendor"
+                            type="object"/>
+                    <button name="send_whatsapp_picking_boy" string="WhatsAapp Picking Boy"
+                            type="object"/>
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

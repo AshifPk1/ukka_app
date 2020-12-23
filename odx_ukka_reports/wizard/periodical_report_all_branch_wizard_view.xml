@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="periodical_all_branch_report_xlsx_form" model="ir.ui.view">
+            <field name="name">periodcal.report.xlsx.form</field>
+            <field name="model">periodical.report.xlsx.wiz</field>
+            <field name="arch" type="xml">
+                <form>
+                        <group>
+                            <group>
+                                <label for="date_from" string="Date"/>
+                                <div class="o_row">
+                                    <field name="date_from" required="1"/>To
+                                    <field name="date_to" required="1"/>
+                                </div>
+<!--                                <field name="deliver_boy"-->
+<!--                                domain="[('is_delivery', '=', True)]"/>-->
+                            </group>
+                            <group>
+                                <field name="branch_id"/>
+                            </group>
+                        </group>
+                    <footer>
+                        <button name="print_report_xlsx" string="Create Xlsx" type="object" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+     </record>
+
+    <record model="ir.actions.act_window" id="periodical_allbranch_report_xlsx_action">
+        <field name="name">Periodical Report</field>
+        <field name="res_model">periodical.report.xlsx.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="periodical_report_xlsx_menu" parent="sale.menu_sale_report" name="Periodical Report"
+              action="periodical_allbranch_report_xlsx_action" sequence="4"/>
+</data>
+</odoo>

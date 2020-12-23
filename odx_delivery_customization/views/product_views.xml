@@ -1,0 +1,95 @@
+<data>
+    <!-- Inherit Product Form View to Modify it -->
+    <record id="view_product_form_inherit" model="ir.ui.view">
+        <field name="name">product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/div[2]/div[1]/div[2]" position="after">
+                <div>
+                    <field name="own_product" nolabel="1"/>
+                    <label for="own_product"/>
+                </div>
+                <div>
+                    <field name="is_offer" nolabel="1"/>
+                    <label for="is_offer"/>
+                </div>
+                <div>
+                    <field name="is_featured" nolabel="1"/>
+                    <label for="is_featured"/>
+                </div>
+                <div>
+                    <field name="show_in_app" nolabel="1"/>
+                    <label for="show_in_app"/>
+                </div>
+
+
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="malayalam_name" placeholder="Malayalam Name.."/>
+                <div>
+
+                    <field name="product_tag_ids" placeholder="Tags" widget="many2many_tags" nolabel="1"/>
+
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='taxes_id']" position="before">
+
+                <field name="mrp"/>
+
+
+            </xpath>
+            <xpath expr="//field[@name='uom_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='uom_po_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='general_information']" position="after">
+
+                <page name="product_images" string="Images">
+                    <field name="product_images_ids" class="o_website_sale_image_list" context="{'default_name': name,}"
+                           mode="kanban" options="{'create_text':'Add a Media'}" nolabel="1"/>
+
+
+                </page>
+
+
+            </xpath>
+            <xpath expr="//page[@name='product_images']" position="after">
+
+                <page name="product_uom" string="UOM">
+                    <field name="product_uom_ids" context="{'default_name': name,}" mode="tree" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name" invisible="1"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                            <field name="price"/>
+                            <field name="strike_price"/>
+                            <field name="product_uom_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <field name="display_uom" invisible="1"/>
+
+
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="view_product_tree" model="ir.ui.view">
+        <field name="name">product.product.tree.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+
+            <field name="default_code" position="before">
+                <field name="sequence" widget="handle"/>
+
+            </field>
+        </field>
+    </record>
+</data>

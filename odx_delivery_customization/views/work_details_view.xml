@@ -1,0 +1,137 @@
+<odoo>
+    <data>
+<!--        Create Tree view for work.details model-->
+          <record id="work_details_view_tree" model="ir.ui.view">
+            <field name="name">work_details.view.tree</field>
+            <field name="model">work.details</field>
+            <field name="arch" type="xml">
+                <tree string="Work Details">
+                    <field name="name"/>
+                    <field name="picking_boy_id"/>
+                    <field name="starting_time"/>
+                    <field name="ending_time"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+        <!--     Create form view for work.details model-->
+        <record model="ir.ui.view" id="work_details_form_view">
+            <field name="name">work.details.form</field>
+            <field name="model">work.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_start" string="Start" attrs="{'invisible':[('state', 'not in', ['draft'])]}"
+                      type="object" class="oe_highlight" />
+                        <button name="action_close" string="Close" attrs="{'invisible':[('state', 'not in', ['done'])]}"
+                      type="object" class="oe_highlight" />
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,done,closed"/>
+                    </header>
+                    <sheet>
+
+                          <div class="oe_button_box" name="button_box">
+
+                            <button name="view_pickup_orders" type="object" class="oe_stat_button" icon="fa-book"
+                                    string="PickUp Orders">
+                                <field name="picking_ids" invisible="1" />
+                            </button>
+                              <button name="view_delivery_orders" type="object" class="oe_stat_button" icon="fa-truck"
+                                    string="Delivery Orders">
+                                <field name="delivery_ids" invisible="1"/>
+                            </button>
+                          </div>
+                         <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                       </div>
+                        <group>
+                            <group>
+                                <field name="company_id" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                                <field name="picking_boy_id" options="{'no_create': True,'no_edit': True}" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                                <field name="starting_km"  widget="image" attrs="{'invisible':[('state', 'not in', ['draft','closed'])]}"/>
+                                <field name="starting_km_in_numbers" attrs="{'readonly':[('state', 'in', ['done','closed'])]}"/>
+                                <field name="starting_time" />
+                                <field name="invoice_created" invisible="1"/>
+                                <field name="expense_created" invisible="1"/>
+
+                            </group>
+                            <group>
+                                <field name="ending_km"  widget="image" attrs="{'invisible':[('state', 'not in', ['done','closed'])]}"/>
+                                <field name="ending_km_in_numbers" required="1" attrs="{'invisible':[('state', 'in', ['draft'])],'readonly':[('state', 'in', ['closed'])]}"/>
+                                <field name="ending_time" attrs="{'invisible':[('state', 'in', ['draft'])]}"/>
+                            </group>
+                            <group>
+                                <field name="total_km" attrs="{'invisible':[('state', 'not in', ['closed'])]}"/>
+
+                            </group>
+                        </group>
+                        <notebook invisible="1">
+                            <page string="PickUp Orders">
+                                <field name="picking_ids" nolabel="1">
+                                    <tree>
+                                        <field name="picking_lines_ids"/>
+                                        <field name="total_ordered_amount"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Delivery Orders">
+                                <field name="delivery_ids" nolabel="1">
+                                    <tree>
+                                        <field name="picking_lines_ids"/>
+                                        <field name="total_ordered_amount"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+
+
+	        	</notebook>
+
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="work_details_search" model="ir.ui.view">
+        <field name="name">work.details.search</field>
+        <field name="model">work.details</field>
+        <field name="arch" type="xml">
+            <search string="Work Details">
+
+                <filter string="On Duty" name="filter_on_duty" domain="[('state','=','done')]"/>
+                <filter string="Close" name="filter_closed" domain="[('state','=','closed')]"/>
+                <filter string="Create Date" name="filter_create_date" date="create_date"/>
+
+                    <separator/>
+
+                <field name="name"/>
+
+
+
+
+
+                <group expand="1" string="Group By">
+
+
+                    <filter string="State" name="state" context="{'group_by':'state'}"/>
+
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+        <record id="action_work_details" model="ir.actions.act_window">
+            <field name="name">Work Details</field>
+            <field name="res_model">work.details</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_filter_on_duty': 1}</field>
+        </record>
+
+        <menuitem name="Work Details" id="menu_work_details" action="action_work_details"
+                  parent="work_details_menu" sequence="6" groups="odx_delivery_customization.ukka_group_manager,odx_delivery_customization.group_delivery_boy"/>
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_delivery_boy" model="ir.actions.act_window">
+            <field name="name">Delivery Boy</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_is_delivery':True,'create': False}</field>
+            <field name="domain">[('is_delivery', '=', True)]</field>
+        </record>
+
+
+    </data>
+</odoo>

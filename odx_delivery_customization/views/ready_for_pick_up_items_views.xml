@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+        <record id="action_ready_pickup_items" model="ir.actions.act_window">
+            <field name="name">Ready For PickUp</field>
+            <field name="res_model">delivery.picking.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('picking_line_id.state', '=','pending'),('sale_order_id','!=',False)]</field>
+            <field name="context">{'search_default_vendor_id': 1}</field>
+        </record>
+        <record id="ready_pickup_line_tree" model="ir.ui.view">
+        <field name="name">delivery.line.tree</field>
+        <field name="model">delivery.picking.line</field>
+        <field name="arch" type="xml">
+            <tree  string="Ready For PickUp" create="0" default_order="create_date" editable="bottom">
+
+                <field name="sale_order_id" readonly="1"/>
+                <field name="picking_line_id" readonly="1"/>
+                 <field name="product_id" readonly="1"/>
+                <field name="product_qty" readonly="1"/>
+                <field name="mrp" readonly="1"/>
+                <field name="is_picked"/>
+                 <field name="is_outside"/>
+                <field name="cost"/>
+                <field name="create_time" readonly="1"/>
+
+
+            </tree>
+        </field>
+    </record>
+
+        <record id="ready_pickup_line_form" model="ir.ui.view">
+        <field name="name">delivery.line.form</field>
+        <field name="model">delivery.picking.line</field>
+        <field name="arch" type="xml">
+            <form string="Ready For PickUp" create="0">
+
+                <sheet>
+                     <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                       </div>
+                 <group>
+                         <group>
+
+                            <field name="sale_order_id"/>
+                             <field name="product_id"/>
+                             <field name="product_qty"/>
+                              <field name="mrp"/>
+
+                    </group>
+                    <group>
+
+                            <field name="create_time"/>
+                            <field name="picking_line_id" />
+                            <field name="is_picked"/>
+                            <field name="is_outside"/>
+                            <field name="cost"/>
+                            <field name="price_subtotal"/>
+
+
+                        </group>
+                 </group>
+
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <record id="ready_pickup_search" model="ir.ui.view">
+        <field name="name">ready.picking.search</field>
+        <field name="model">delivery.picking.line</field>
+        <field name="arch" type="xml">
+            <search string="PickUp Items">
+                <filter string="Ready for PickUp" name="pending_orders" domain="[('picking_line_id.state','=','pending')]"/>
+
+
+                    <separator/>
+                    <filter string="Create Date" name="filter_create_date" date="create_time"/>
+                <separator/>
+                <field name="product_id" string="Product" filter_domain="[('product_id', 'ilike', self)]"/>
+                <field name="create_time" />
+
+                <group expand="1" string="Group By">
+
+                    <filter string="Vendor" name="vendor_id" context="{'group_by':'vendor_id'}"/>
+<!--                    <filter string="Date" name="create_time" context="{'group_by':'create_time'}"/>-->
+
+                </group>
+            </search>
+        </field>
+        </record>
+
+
+        <menuitem name="Ready For PickUp" id="menu_ready_pickup_items" action="action_ready_pickup_items"
+                  parent="delivery_order_menu" sequence="4" groups="odx_delivery_customization.ukka_group_manager,odx_delivery_customization.group_delivery_boy"/>
+
+    </data>
+</odoo>

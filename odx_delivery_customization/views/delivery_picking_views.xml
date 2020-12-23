@@ -1,0 +1,556 @@
+<odoo>
+    <data>
+        <!--     Create tree view for delivery.picking model-->
+        <record id="delivery_details_view_tree" model="ir.ui.view">
+            <field name="name">delivery.picking.tree</field>
+            <field name="model">delivery.picking</field>
+            <field name="arch" type="xml">
+                <tree string="Picking/Delivery Details" create="false" delete="false">
+                    <field name="name"/>
+                    <field name="sale_order_id"/>
+                    <field name="pick_up_boy_id"/>
+                    <field name="delivery_boys_id"/>
+                    <field name="state"/>
+                </tree>
+
+            </field>
+        </record>
+
+        <!--     Create form view for delivery.picking model-->
+        <record model="ir.ui.view" id="odx_delivery_customization.delivery_picking_form_view">
+            <field name="name">delivery.picking.form</field>
+            <field name="model">delivery.picking</field>
+            <field name="arch" type="xml">
+                <form create="false" delete="false">
+                    <header>
+                        <button name="action_confirm" string="Confirm" states="pending"
+                                type="object" class="oe_highlight"/>
+                        <button name="action_delivered_confirm" string="Deliver" states="ready"
+                                type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="pending,ready,confirmed"/>
+                        <button name="thankyou_note_message" string="Message Customer" states="confirmed"
+                                type="object" class="oe_highlight"/>
+                        <button name="edit_delivered_order" string="Update Delivery" states="confirmed"
+                                type="object" class="oe_highlight"
+                                groups="odx_delivery_customization.group_update_delivery"/>
+                        <button name="edit_picked_order" string="Update PickUp" states="ready"
+                                type="object" class="oe_highlight"
+                                groups="odx_delivery_customization.group_update_delivery"/>
+
+
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" text="Urgent" bg_color="bg-danger"
+                                attrs="{'invisible': [('urgent_shipping', '=', False)]}"/>
+
+                        <!--                        <div class="oe_button_box" name="button_box"-->
+                        <!--                             attrs="{'invisible':[('state', 'not in', ['confirmed'])]}">-->
+                        <!--                            <button name="view_register_payment" type="object" class="oe_stat_button" icon="fa-money"-->
+                        <!--                                    string="Payments">-->
+                        <!--                                <field name="payment_id" invisible="1"/>-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="sale_order_id" readonly="1"/>
+                                <field name="company_id" readonly="1"/>
+                                <field name="urgent_shipping" invisible="1"/>
+
+
+                            </group>
+                            <group>
+                                <field name="create_time"
+                                       attrs="{'required': [('state', 'in', ['pending'])], 'readonly': [('state', 'in', ['pending','ready', 'confirmed'])]}"/>
+
+
+                                <field name="settlement_id" invisible="1"/>
+                                <field name="pick_up_boy_id" readonly="1"
+                                       options="{'no_create': True,'no_edit': True}"/>
+
+                                <field name="delivery_boys_id" readonly="1"
+                                       options="{'no_create': True,'no_edit': True}"/>
+                                <field name="payment_id" invisible="1"/>
+
+
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Customer Details">
+                                <field name="picking_partner_id" invisible="1"/>
+                                <field name="customer_name" readonly="1"/>
+                                <field name="location_link" widget="url" readonly="1"/>
+                                <field name="address" readonly="1"/>
+                                <field name="street" readonly="1"/>
+                                <field name="city" readonly="1"/>
+                                <field name="zip" readonly="1"/>
+                                <field name="state_id" readonly="1"/>
+                                <field name="mobile_number" readonly="1"/>
+
+                            </group>
+                            <group string="Payment Details" attrs="{'invisible':[('state', 'in', ['pending'])]}">
+
+
+                                <field name="payment_status" widget="radio"
+                                       attrs="{'readonly':[('state', 'in', ['confirmed'])],'invisible':[('state', 'in', ['pending'])]}"/>
+
+                                <field name="payment_method_id"
+                                       attrs="{'readonly':[('state', 'in', ['confirmed'])],'invisible':['|',('payment_status', '=','credit'),('state', 'in', ['pending'])]}"
+                                       options="{'no_create': True,'no_edit': True}"/>
+
+                            </group>
+                        </group>
+
+
+                        <group name="picking_details" string="Picking Details"
+                               attrs="{'invisible':[('state', 'not in', ['pending'])]}"/>
+                        <group name="picking_details" string="Delivery Details"
+                               attrs="{'invisible':[('state', 'not in', ['ready'])]}"/>
+                        <group name="picking_details" string="Picking/Delivery Details"
+                               attrs="{'invisible':[('state', 'not in', ['confirmed'])]}"/>
+                        <group>
+
+                            <field name="picking_lines_ids" widget="section_and_note_one2many"
+                                   mode="tree,kanban" nolabel="1">
+                                <form>
+                                    <group attrs="{'invisible': [('display_type', '=', False)]}">
+                                        <label for="name" string="Section Name (eg. Categories, Shop)"
+                                               attrs="{'invisible': [('display_type', '!=', 'line_section')]}"/>
+                                        <!--                                    <label for="name" string="Note" attrs="{'invisible': [('display_type', '!=', 'line_note')]}"/>-->
+                                        <field name="name" readonly="1" nolabel="1"/>
+                                    </group>
+                                    <group attrs="{'invisible': [('display_type', '!=', False)]}">
+                                        <label for="category" string="Category"/>
+                                        <div>
+                                            <field name="category" readonly="1"/>
+                                        </div>
+                                        <label for="vendor_id" string="Vendor"/>
+                                        <div>
+                                            <field name="vendor_id" readonly="1"/>
+                                        </div>
+                                        <label for="product_id" string="Product"/>
+                                        <div>
+                                            <field name="product_id" readonly="1"/>
+                                        </div>
+                                        <label for="product_qty" string="Ordered Qty"/>
+                                        <div>
+                                            <field name="product_qty" readonly="1"/>
+                                        </div>
+
+                                        <label for="mrp" string="MRP"/>
+                                        <div>
+                                            <field name="mrp" readonly="1"/>
+                                        </div>
+
+                                        <label for="returned_qty" string="Returned Qty"/>
+                                        <div>
+                                            <field name="returned_qty"/>
+                                        </div>
+                                         <label for="returned_qty_uom" string="Returned Qty Uom"/>
+                                        <div>
+                                            <field name="returned_qty_uom"/>
+                                        </div>
+
+                                        <label for="price_subtotal" string="SubTotal"/>
+                                        <div>
+                                            <field name="price_subtotal" readonly="1"/>
+                                        </div>
+
+                                        <label for="is_picked" string="Picked"/>
+                                        <div>
+                                            <field name="is_picked"/>
+                                        </div>
+                                        <label for="is_outside" string="Outside Purchase"/>
+                                        <div>
+                                            <field name="is_outside"/>
+                                        </div>
+                                        <label for="cost" string="Cost"
+                                               attrs="{'invisible': [('is_outside', '=', False)]}"/>
+                                        <div attrs="{'invisible': [('is_outside', '=', False)]}">
+                                            <field name="cost"/>
+                                        </div>
+                                        <label for="update_order" string="Updates"/>
+                                        <div>
+                                            <field name="update_order" readonly="1"/>
+                                        </div>
+                                        <div>
+                                            <field name="product_uom" readonly="1"/>
+                                        </div>
+                                         <div>
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                        </div>
+
+                                    </group>
+
+
+                                    <field name="display_type" invisible="1"/>
+
+                                    <field name="sale_order_id" invisible="1"/>
+                                </form>
+                                <tree editable="bottom" create="false" delete="false">
+
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="name" nolabel="true" widget="section_and_note_text" optional="show"/>
+                                    <field name="sale_order_id" invisible="1"/>
+                                    <field name="category" invisible="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="total_ordred_qty" readonly="1"/>
+                                    <field name="product_qty" readonly="1"/>
+                                    <field name="product_uom" readonly="1"/>
+                                    <field name="sale_order_line_id" invisible="1"/>
+                                    <field name="is_picked"
+                                           attrs="{'column_invisible':[('parent.state', 'not in', ['pending','confirmed'])],'readonly': [('parent.state', 'in', ['ready', 'confirmed'])]}"/>
+                                    <field name="mrp" readonly="1"/>
+                                    <field name="product_uom_category_id" invisible="1"/>
+                                    <field name="returned_qty"
+                                           attrs="{'column_invisible':[('parent.state', 'not in', ['ready','confirmed'])],'readonly': [('parent.state', 'in', ['confirmed'])]}"/>
+                                    <field name="returned_qty_uom" attrs="{'column_invisible':[('parent.state', 'not in', ['ready','confirmed'])],'readonly': [('parent.state', 'in', ['confirmed'])]}" options="{'no_create_edit': True}"/>
+                                    <field name="is_outside"
+                                           attrs="{'column_invisible':[('parent.state', 'not in', ['pending','confirmed'])],'readonly': [('parent.state', 'in', ['ready', 'confirmed'])]}"/>
+                                    <field name="cost" string="Cost"
+                                           attrs="{'column_invisible':[('parent.state', 'not in', ['pending','confirmed'])],'readonly': ['|',('is_outside', '=', False),('parent.state', 'in', ['confirmed'])]}"/>
+                                    <field name="price_subtotal" readonly="1"/>
+                                    <field name="update_order" readonly="1"/>
+                                </tree>
+                                <kanban class="o_kanban_mobile" create="false" delete="false">
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="name"/>
+
+                                    <field name="category"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="product_qty" readonly="1"/>
+                                    <field name="product_uom" readonly="1"/>
+
+                                    <field name="is_picked"/>
+                                    <field name="mrp" readonly="1"/>
+
+                                    <field name="returned_qty"/>
+                                    <field name="returned_qty_uom"/>
+                                    <field name="is_outside"/>
+                                    <field name="cost"/>
+                                    <field name="price_subtotal" readonly="1"/>
+                                    <field name="update_order" readonly="1"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+
+                                                                <t t-esc="record.name.value"/>
+
+
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+
+                                                </div>
+                                                <t t-if="!record.product_id.value == '0'">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <strong>
+                                                                <span>
+
+                                                                    <t t-esc="record.name.value"/>
+
+
+                                                                </span>
+                                                            </strong>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <strong>
+                                                                <span>
+                                                                    <t t-esc="record.product_id.value"/>
+                                                                </span>
+                                                            </strong>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <strong>
+                                                                <span>
+                                                                    Ordered Quantity:
+                                                                    <t t-esc="record.product_qty.value"/>
+
+                                                                </span>
+                                                                <span>
+                                                                    <t t-esc="record.product_uom.value"/>
+                                                                </span>
+                                                            </strong>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <strong>
+                                                                <span>
+                                                                    MRP:
+                                                                    <t t-esc="record.mrp.value"/>
+                                                                </span>
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <strong>
+                                                                <span>
+                                                                    SubTotal:
+                                                                    <t t-esc="record.price_subtotal.value"/>
+                                                                </span>
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <strong>
+                                                                <span>
+                                                                    Order Updates:
+                                                                    <t t-esc="record.update_order.value"/>
+                                                                </span>
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+                                                    <!--                                                    <div class="row">-->
+                                                    <!--                                                        <div class="col-12">-->
+                                                    <!--                                                            <strong>-->
+                                                    <!--                                                                <span>-->
+                                                    <!--&lt;!&ndash;                                                    <a name="toggle_active" type="object" class="dropdown-item" role="menuitem" t-if="record.active.value">Archive</a>&ndash;&gt;-->
+                                                    <!--                                                                  Outside Purchase:-->
+
+                                                    <!--                                                                 <button name="toggle_active" type="object" class="btn-success" icon="fa-shopping-bag" attrs="{'invisible': [('is_outside', '=', False)]}">-->
+                                                    <!--                                                                    <field name="is_outside"-->
+                                                    <!--                                                                           widget="boolean_button"-->
+
+                                                    <!--                                                                    />-->
+                                                    <!--                                                                </button>-->
+                                                    <!--                                                                    <button name="toggle_active" type="object" class="btn-danger" icon="fa-shopping-bag" attrs="{'invisible': [('is_outside', '=', True)]}">-->
+                                                    <!--                                                                    <field name="is_outside"-->
+                                                    <!--                                                                           widget="boolean_button"-->
+
+                                                    <!--                                                                    />-->
+                                                    <!--                                                                </button>-->
+
+
+                                                    <!--                                                            </span>-->
+                                                    <!--                                                            </strong>-->
+
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <strong>
+                                                                <span>
+                                                                    Picked:
+                                                                    <!--                                                    <a name="toggles_active" type="object" class="btn-success" role="button" t-if="record.is_picked.value">Picked</a>-->
+                                                                    <!--                                                    <a name="toggles_active" type="object" class="btn-danger" role="button" t-if="!record.is_picked.value">Not Picked</a>-->
+                                                                    <button name="toggles_active" type="object"
+                                                                            class="btn-danger" icon="fa-shopping-bag"
+                                                                            attrs="{'invisible': [('is_picked', '=', True)]}">
+                                                                        <field name="is_picked"
+                                                                               widget="boolean_button"
+
+                                                                        />
+                                                                    </button>
+                                                                    <button name="toggles_active" type="object"
+                                                                            class="btn-success" icon="fa-shopping-bag"
+                                                                            attrs="{'invisible': [('is_picked', '=', False)]}">
+                                                                        <field name="is_picked"
+                                                                               widget="boolean_button"
+
+                                                                        />
+                                                                    </button>
+
+                                                                </span>
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+
+                                                </t>
+
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </group>
+                        <notebook attrs="{'invisible': [('state','!=','confirmed')]}">
+                            <page string="Tracking Details">
+                                <group>
+                                    <group>
+                                        <label for="picking_user_id" string="Picked By"/>
+                                        <div>
+                                            <field name="picking_user_id"/>
+                                        </div>
+                                        <label for="picking_time" string="Picked On"/>
+                                        <div>
+                                            <field name="picking_time"/>
+                                        </div>
+                                         <label for="time_for_picking" string="Time for Picking"/>
+                                        <div>
+                                            <field name="time_for_picking"/>
+                                        </div>
+
+                                    </group>
+                                    <group>
+                                        <label for="delivery_user_id" string="Delivered By"/>
+                                        <div>
+                                            <field name="delivery_user_id"/>
+                                        </div>
+                                        <label for="delivered_time" string="Delivered On"/>
+                                        <div>
+                                            <field name="delivered_time"/>
+                                        </div>
+                                        <label for="time_for_delivery" string="Time for Delivery"/>
+                                        <div>
+                                            <field name="time_for_delivery"/>
+                                        </div>
+
+                                    </group>
+                                </group>
+
+
+                            </page>
+
+
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="delivery_total">
+                            <field name="delivery_charges" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            <field name="discount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}" readonly="1"/>
+
+                            <field name="total_ordered_amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_returned_amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                <label for="total_collected_amount"/>
+                            </div>
+                            <field name="total_collected_amount" nolabel="1" class="oe_subtotal_footer_separator"
+                                   widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="delivery_picking_search" model="ir.ui.view">
+            <field name="name">delivery.packing.search</field>
+            <field name="model">delivery.picking</field>
+            <field name="arch" type="xml">
+                <search string="Picking Details">
+
+                    <filter string="Delivered Ordered" name="delivered_orders" domain="[('state','=','confirmed')]"/>
+                    <filter string="Pending Orders" name="pending_orders" domain="[('state','=','pending')]"/>
+                    <filter string="Ready to Deliver" name="ready_orders" domain="[('state','=','ready')]"/>
+
+                    <separator/>
+                    <filter string="Create Date" name="filter_create_date" date="create_time"/>
+                    <separator/>
+
+                    <field name="pick_up_boy_id"/>
+                    <field name="picking_lines_ids" string="Product"
+                           filter_domain="[('picking_lines_ids.product_id', 'ilike', self)]"/>
+                    <field name="create_time"/>
+                    <field name="sale_order_id"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Delivery Boy" name='delivery_boys_id'
+                                context="{'group_by':'delivery_boys_id'}"/>
+                        <filter string="Picking Boy" name="pick_up_boy_id" context="{'group_by':'pick_up_boy_id'}"/>
+                        <filter string="State" name="state" context="{'group_by':'state'}"/>
+                        <filter string="Date" name="create_time" context="{'group_by':'create_time'}"/>
+
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_delivery_picking" model="ir.actions.act_window">
+            <field name="name">Delivery Picking</field>
+            <field name="res_model">delivery.picking</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_state': 1}</field>
+
+        </record>
+
+
+        <record id="action_quotations_in_direct" model="ir.actions.act_window">
+            <field name="name">Customer Quotations</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="domain">[('state','=','draft'),('order_method','=','direct')]
+            </field>
+            <!--            <field name="context">{'search_default_order_placed': 1}</field>-->
+        </record>
+        <menuitem id="ukka_order_menu"
+                  name="Orders"
+                  parent="sale.sale_menu_root"
+                  sequence="2" groups="odx_delivery_customization.ukka_group_manager"/>
+        <menuitem name="Direct Orders" id="direct_orders_menu"
+                  parent="ukka_order_menu" sequence="1"/>
+        <menuitem id="menu_sale_quotations"
+                  action="action_quotations_in_direct"
+                  parent="direct_orders_menu"
+                  sequence="1" groups="odx_delivery_customization.ukka_group_manager"/>
+        <menuitem id="menu_sale_order"
+
+                  action="sale.action_orders"
+                  parent="direct_orders_menu"
+                  sequence="1" groups="odx_delivery_customization.ukka_group_manager"/>
+        <menuitem name="Mobile App" id="mobile_app_menu"
+                  parent="ukka_order_menu" sequence="1"/>
+        <menuitem name="Ecommerce" id="ecommerce_app_menu" parent="ukka_order_menu" sequence="1"/>
+        <menuitem id="menu_orders_orders" name="Orders"
+                  action="website_sale.action_orders_ecommerce"
+                  parent="ecommerce_app_menu" sequence="1"/>
+        <menuitem id="menu_orders_unpaid_orders" name="Unpaid Orders"
+                  action="website_sale.action_view_unpaid_quotation_tree"
+                  parent="ecommerce_app_menu" sequence="2"/>
+        <menuitem id="menu_orders_abandoned_orders" name="Abandoned Carts"
+                  action="website_sale.action_view_abandoned_tree"
+                  parent="ecommerce_app_menu" sequence="3"/>
+        <menuitem id="menu_orders_customers" name="Customers"
+                  action="base.action_partner_customer_form"
+                  parent="ecommerce_app_menu" sequence="4"/>
+        <menuitem id="delivery_order_menu"
+                  name="Picking Details"
+                  parent="sale.sale_menu_root"
+                  sequence="3" groups="odx_delivery_customization.ukka_group_manager,odx_delivery_customization.group_delivery_boy"/>
+        <menuitem id="work_details_menu"
+                  name="Work Details"
+                  parent="sale.sale_menu_root"
+                  sequence="3" groups="odx_delivery_customization.ukka_group_manager,odx_delivery_customization.group_delivery_boy"/>
+
+        <menuitem name="Delivery Boy" id="menu_delivery_boy" action="action_delivery_boy"
+                  parent="work_details_menu" sequence="5" groups="odx_delivery_customization.ukka_group_manager"/>
+
+
+        <menuitem name="Pick Up Details" id="menu_picking_details" action="action_delivery_picking"
+                  parent="delivery_order_menu" sequence="6" groups="odx_delivery_customization.ukka_group_manager,odx_delivery_customization.group_delivery_boy"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+
+<!--        Tree view for uom setting in products for app orders-->
+        <record id="product_uom_setting_tree" model="ir.ui.view">
+        <field name="name">product.uom.setting.tree</field>
+        <field name="model">product.uom.setting</field>
+        <field name="arch" type="xml">
+             <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="quantity"/>
+                                <field name="product_uom_id" invisible="1"/>
+                                <field name="uom_id" />
+
+             </tree>
+        </field>
+    </record>
+<!--        Form View for Product uom setting Orders-->
+        <record id="product_uom_setting_form" model="ir.ui.view">
+        <field name="name">product.uom.setting.tree</field>
+        <field name="model">product.uom.setting</field>
+        <field name="arch" type="xml">
+            <form string="Product UoM Setting">
+
+                <sheet>
+
+                 <group>
+                     <group>
+                            <field name="name"/>
+                            <field name="quantity"/>
+                            <field name="uom_id" />
+
+
+
+                    </group>
+                     <group>
+                          <field name="product_uom_id" invisible="1"/>
+
+                     </group>
+
+                 </group>
+
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>

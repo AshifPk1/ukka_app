@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delivery_picking,access_delivery_picking,model_delivery_picking,,1,1,1,1
+access_delivery_picking_line,access_delivery_picking_line,model_delivery_picking_line,,1,1,1,1
+access_work_details,access_work_details,model_work_details,,1,1,1,1
+access_settlement_details,access_settlement_details,model_settlement_details,,1,1,1,1
+access_purchase_order_payments,access_purchase_order_payments,model_purchase_order_payments,,1,1,1,1
+access_product_images,access_product_images,model_product_images,,1,1,1,1
+access_delivery_time_slot,access_delivery_time_slot,model_delivery_time_slot,,1,1,1,1
+access_banner_images,access_banner_images,model_banner_images,,1,1,1,1
+access_product_uom_setting,access_product_uom_setting,model_product_uom_setting,,1,1,1,1
+access_product_tags,access_product_tags,model_product_tags,,1,1,1,1
